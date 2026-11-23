@@ -1,0 +1,476 @@
+% ==============================================================================
+% ESQUELETO EDITORIAL COMPILÁVEL — MINIARTIGO CIENTÍFICO (4 PÁGINAS EXATAS)
+% Tema: Quantum Annealing (Recozimento Quântico)
+% Disciplina: Física Estatística Avançada
+% Padrão tipográfico: APS / Physical Review (duas colunas, 10pt)
+%
+% INSTRUÇÃO AO AUTOR (NÃO-REDAÇÃO):
+%   Este arquivo contém EXCLUSIVAMENTE a arquitetura, o mapa de parágrafos,
+%   as equações numeradas com checagem dimensional, os blocos de figura/tabela
+%   e as chaves de citação. Substitua cada ambiente `itemize` pelo texto
+%   científico corrido respeitando o orçamento de palavras/linhas indicado.
+%   Após redigir, remova o pacote `enumitem` (se não utilizado) e substitua
+%   o quadro reservado da Fig. 1 pelo arquivo gráfico final.
+%
+% ==============================================================================
+% ORÇAMENTO GLOBAL DE ESPAÇO (META: EXATAMENTE 4 PÁGINAS EM DUAS COLUNAS)
+% Referência APS 10pt: ~900–950 palavras por página cheia de texto puro.
+% Com cabeçalho, 10 equações, 1 figura, 2 tabelas e 5 referências:
+%   Total de texto corrido alvo: ~2.150 – 2.450 palavras.
+%
+%   PÁGINA 1 (~1,00 pág.):
+%     - Título, Autor, Afiliação + Resumo (<= 150 palavras) .... ~0,35 pág.
+%     - Sec. I   (Introdução: 380–420 palavras / ~45–50 linhas)  ~0,45 pág.
+%     - Sec. II.A (Escape Térmico vs. WKB: 200–230 pal. + 2 eqs) ~0,20 pág.
+%
+%   PÁGINA 2 (~1,00 pág.):
+%     - Sec. II.B (TFIM e estoquasticidade: 250–280 pal. + 2 eqs) ~0,30 pág.
+%     - Sec. II.C (Adiabático, QPTs, cronog.: 320–360 pal. + 3 eqs) ~0,38 pág.
+%     - Sec. III  (Metodologia: 280–320 pal. + 3 eqs) ........... ~0,32 pág.
+%
+%   PÁGINA 3 (~1,00 pág.):
+%     - Sec. IV  (Resultados: 220–260 pal. + Fig. 1 + Tab. I) ... ~0,62 pág.
+%     - Sec. V   (Discussão — parte 1: 280–320 palavras) ........ ~0,38 pág.
+%
+%   PÁGINA 4 (~1,00 pág.):
+%     - Sec. V   (Discussão — parte 2: 150–180 palavras) ........ ~0,18 pág.
+%     - Sec. VI  (Conclusões: 180–220 palavras) ................. ~0,22 pág.
+%     - Declaração de Uso Crítico de IA (~100 pal. + Tab. II) ... ~0,35 pág.
+%     - Referências (5 entradas padrão APS) ..................... ~0,25 pág.
+% ==============================================================================
+
+% --- CLASSE PRINCIPAL (PADRÃO APS / PHYSICAL REVIEW) ---
+\documentclass[aps,pre,twocolumn,10pt,superscriptaddress,nofootinbib]{revtex4-2}
+
+% --- ALTERNATIVA SEM REVTEX (DESCOMENTE SE O COMPILADOR NÃO TIVER revtex4-2) ---
+% \documentclass[10pt,twocolumn,a4paper]{article}
+% \usepackage[a4paper,top=1.8cm,bottom=1.8cm,left=1.5cm,right=1.5cm,columnsep=0.6cm]{geometry}
+% \renewcommand{\thesection}{\Roman{section}}
+% \renewcommand{\thesubsection}{\Alph{subsection}}
+% % Nota: na classe `article`, mova o ambiente `abstract` para DEPOIS de `\maketitle`
+% % (ou use `\twocolumn[\maketitle \begin{abstract}...\end{abstract}]`) e troque
+% % `\affiliation{...}` por nota no `\author{...}`.
+% ------------------------------------------------------------------------------
+
+% --- PREÂMBULO COMPILÁVEL ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{physics}       % Fornece \ket, \bra, \braket, \mel, \ev, \comm, \pdv, \dv, \abs
+\usepackage{graphicx}
+\usepackage{booktabs}      % Tabelas acadêmicas (\toprule, \midrule, \bottomrule)
+\usepackage{enumitem}      % Apenas para compactar o mapa de tópicos do esqueleto
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% Ajuste de rótulos APS em português (PT-BR)
+\addto\captionsbrazil{%
+  \renewcommand{\figurename}{FIG.}%
+  \renewcommand{\tablename}{TABELA}%
+  \renewcommand{\abstractname}{Resumo}%
+  \renewcommand{\refname}{Referências}%
+}
+
+% Estilo compacto para as diretrizes estruturais (remover na versão final)
+\setlist[itemize]{nosep,leftmargin=*,label=--}
+
+\begin{document}
+
+% ==============================================================================
+% PÁGINA 1 — CABEÇALHO E RESUMO (~0,35 pág.)
+% ==============================================================================
+\title{[TÍTULO CONCISO E INFORMATIVO EM PT-BR SOBRE QUANTUM ANNEALING vs. SIMULATED ANNEALING]}
+
+\author{[Nome Completo do Autor]}
+\email{[email@instituicao.edu.br]}
+\affiliation{[Departamento / Instituto de Física, Universidade ..., Cidade, UF, Brasil]}
+
+\date{\today}
+
+% --- RESUMO ESTRUTURADO ---
+% ORÇAMENTO: máximo rigoroso de 150 palavras (~12–15 linhas em largura total).
+% Na classe `revtex4-2`, o ambiente `abstract` DEVE vir antes de `\maketitle`.
+\begin{abstract}
+\begin{itemize}
+  \item \textbf{[1. Problema --- 1 frase, $\approx 25$ pal.]:} Contextualizar a dificuldade de otimização combinatória em paisagens de energia rugosas (vidros de spin) e o aprisionamento térmico no \emph{Simulated Annealing} (SA).
+  \item \textbf{[2. Modelo --- 1 frase, $\approx 25$ pal.]:} Apresentar o \emph{Quantum Annealing} (QA) via Modelo de Ising com Campo Transverso (TFIM) dependente do tempo.
+  \item \textbf{[3. Metodologia --- 1--2 frases, $\approx 35$ pal.]:} Especificar a abordagem adotada (Opção A: integração numérica exata de Schrödinger vs. Equação Mestra/Metropolis; ou Opção B: analogia 1D Langevin vs. WKB) e os observáveis $P_{\text{GS}}$ e $\ev{E}$.
+  \item \textbf{[4. Principal resultado quantitativo --- 1--2 frases, $\approx 40$ pal.]:} Reportar o ganho/diferença quantitativa de $P_{\text{GS}}$ ou $\ev{E}$ entre QA e SA nos regimes testados (substituir por valores reais após simulação).
+  \item \textbf{[5. Conclusão --- 1 frase, $\approx 25$ pal.]:} Sintetizar o domínio de vantagem física do QA (barreiras altas/estreitas) e seus gargalos fundamentais (fechamento exponencial do \emph{gap}).
+\end{itemize}
+\end{abstract}
+
+\maketitle
+
+% ==============================================================================
+% SEÇÃO I — INTRODUÇÃO
+% ORÇAMENTO: 380–420 palavras (~45–50 linhas de coluna | ~0,45 pág., Pág. 1)
+% ==============================================================================
+\section{Introdução}
+\label{sec:intro}
+
+% --- Parágrafo 1 (~130–140 palavras / ~15–17 linhas) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo 1 --- Otimização NP-difícil e vidros de spin]:}
+        Formular problemas de otimização combinatória NP-difíceis (ex.: caixeiro-viajante, particionamento de grafos) como busca pelo estado fundamental de uma função custo mapeada em um Hamiltoniano clássico de vidro de spin com desordem congelada e frustração \cite{Kirkpatrick1983,Das2008}.
+  \item Destacar o caráter rugoso da paisagem de energia (múltiplos mínimos locais separados por barreiras macroscópicas) e a inviabilidade da busca exaustiva ($2^N$ configurações).
+\end{itemize}
+
+% --- Parágrafo 2 (~150–170 palavras / ~18–20 linhas) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo 2 --- Do Simulated Annealing ao Quantum Annealing]:}
+        Revisar o paradigma do \emph{Simulated Annealing} (SA), no qual flutuações térmicas (algoritmo de Metropolis e fator de Boltzmann) permitem saltos sobre barreiras de energia durante o resfriamento gradual \cite{Kirkpatrick1983}.
+  \item Introduzir a transição conceitual para o \emph{Quantum Annealing} (QA): substituição (ou complementação) das flutuações térmicas por flutuações quânticas controladas por um campo transverso, explorando tunelamento quântico através de barreiras \cite{Kadowaki1998,Das2008,Chakrabarti2022}.
+\end{itemize}
+
+% --- Parágrafo 3 (~100–110 palavras / ~12–13 linhas) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo 3 --- Objetivo explícito e roteiro do artigo]:}
+        Declarar de forma direta a hipótese central e o objetivo comparativo do miniartigo (avaliar sob quais regimes físicos e cronogramas o QA supera o SA e identificar seus limites).
+  \item Apresentar o roteiro enxuto das seções: Sec.~\ref{sec:fundamentos} (fundamentos teóricos), Sec.~\ref{sec:metodologia} (metodologia e métricas), Sec.~\ref{sec:resultados} (resultados numéricos), Sec.~\ref{sec:discussao} (discussão crítica e hardware) e Sec.~\ref{sec:conclusoes} (conclusões).
+\end{itemize}
+
+% ==============================================================================
+% SEÇÃO II — FUNDAMENTOS FÍSICOS E MATEMÁTICOS
+% ORÇAMENTO TOTAL DA SEÇÃO II: ~770–870 palavras + 7 equações (~0,88 pág., Págs. 1–2)
+% ==============================================================================
+\section{Fundamentos Físicos e Matemáticos}
+\label{sec:fundamentos}
+
+% ------------------------------------------------------------------------------
+% SUBSEÇÃO II.A — ESCAPE TÉRMICO VS. TUNELAMENTO QUÂNTICO
+% ORÇAMENTO: 200–230 palavras + 2 equações (~0,20 pág., final da Pág. 1)
+% ------------------------------------------------------------------------------
+\subsection{Escape Térmico versus Tunelamento Quântico}
+\label{subsec:escape_vs_tunelamento}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 1 --- Ativação térmica (Kramers--Arrhenius), $\approx 100$ pal.]:}
+        Explicar o mecanismo clássico de escape sobre uma barreira de potencial de altura $V_0$ sob temperatura $T$, enfatizando que a taxa depende exponencialmente apenas de $V_0 / (k_B T)$ e é insensível à largura $w$ da barreira \cite{Das2008,Chakrabarti2022}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR VARIÁVEIS E DIMENSÕES]:
+  % \Gamma_{\text{term}}: taxa de escape [T^{-1}]; \omega_0: frequência de tentativa [T^{-1}];
+  % V_0: altura da barreira [E]; k_B T: energia térmica [E] (expoente adimensional).
+  \Gamma_{\text{term}} \sim \omega_0 \exp\!\left( -\frac{V_0}{k_B T} \right).
+  \label{eq:kramers_arrhenius}
+\end{equation}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 2 --- Tunelamento WKB e barreiras altas/estreitas, $\approx 115$ pal.]:}
+        Contrastar com a probabilidade/taxa de tunelamento quântico na aproximação semiclássica WKB, na qual a largura $w$ entra linearmente no expoente e a altura $V_0$ aparece sob raiz quadrada \cite{Das2008,Chakrabarti2022}.
+  \item Explicitar a escala em modelos de spin com campo transverso $\Gamma_q$ ($P_{\text{tun}} \sim \exp(-w\sqrt{V_0}/\Gamma_q)$ \cite{Chakrabarti2022}) e concluir por que barreiras \emph{altas e estreitas} favorecem o QA sobre o SA.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR VARIÁVEIS E DIMENSÕES]:
+  % T_{\text{WKB}}: transmissividade [adimensional]; w: largura da barreira [L];
+  % m_{\text{ef}}: massa efetiva [M]; V_0: altura da barreira [E]; \hbar: const. de Planck reduzida [E*T].
+  % Checar dimensão do expoente: [L] * sqrt([M][E]) / [E*T] = [L]*([M][L]/[T]) / ([M][L]^2/[T]) = adimensional.
+  T_{\text{WKB}} \sim \exp\!\left( -\frac{2 w \sqrt{2 m_{\text{ef}} V_0}}{\hbar} \right).
+  \label{eq:wkb}
+\end{equation}
+
+% ------------------------------------------------------------------------------
+% SUBSEÇÃO II.B — MODELO DE ISING COM CAMPO TRANSVERSO (TFIM)
+% ORÇAMENTO: 250–280 palavras + 2 equações (~0,30 pág., início da Pág. 2)
+% ------------------------------------------------------------------------------
+\subsection{Modelo de Ising com Campo Transverso (TFIM)}
+\label{subsec:tfim}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 1 --- Hamiltoniano dependente do tempo, $\approx 120$ pal.]:}
+        Definir o Hamiltoniano canônico do QA no TFIM (seguindo \cite{Kadowaki1998,Das2008}), decompondo $\mathcal{H}(t)$ no termo problema diagonal $\mathcal{H}_0$ (acoplamentos $J_{ij}$ e campos longitudinais $h_i$ que quebram degenerescência trivial $\mathbb{Z}_2$) e no termo cinético/transverso $-\Gamma(t)\sum_i \sigma_i^x$.
+  \item Comentar brevemente a parametrização interpolada equivalente $\mathcal{H}(s) = A(s)\mathcal{H}_{\text{ini}} + B(s)\mathcal{H}_0$ com $s = t/t_f \in [0,1]$ \cite{Albash2018}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR VARIÁVEIS E CONVENÇÕES]:
+  % J_{ij}: acoplamento de troca [E]; h_i: campo longitudinal local [E];
+  % \Gamma(t): amplitude do campo transverso [E] (\Gamma(0) >> |J_{ij}| -> \Gamma(t_f) = 0);
+  % \sigma_i^{x,z}: matrizes de Pauli no sítio i (adimensionais, autovalores \pm 1).
+  \mathcal{H}(t) = \underbrace{-\sum_{\langle i,j \rangle} J_{ij} \sigma_i^z \sigma_j^z - \sum_{i=1}^{N} h_i \sigma_i^z}_{\mathcal{H}_0} - \Gamma(t) \sum_{i=1}^{N} \sigma_i^x.
+  \label{eq:tfim}
+\end{equation}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 2 --- Não-comutatividade, estado inicial e estoquasticidade, $\approx 150$ pal.]:}
+        Explicar o papel físico da não-comutatividade $\comm{\sigma_i^x}{\sigma_j^z} = -2i\delta_{ij}\sigma_i^y \neq 0$, que induz transições fora da diagonal entre estados clássicos da base computacional $\{\ket{z}\}$.
+  \item Estabelecer a condição inicial para $\Gamma(0) \gg \norm{\mathcal{H}_0}$: estado fundamental trivial de superposição uniforme, Eq.~\eqref{eq:estado_inicial} \cite{Kadowaki1998,Albash2018}.
+  \item Definir \emph{Hamiltonianos estoquásticos} ($\mel{z}{\mathcal{H}}{z'} \le 0$ para todo $z \neq z'$ na base computacional) e discutir a consequência central: ausência do problema de sinal em Monte Carlo Quântico (PIMC) e implicações para o poder computacional do QA padrão \cite{Albash2018}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR VARIÁVEIS E NORMALIZAÇÃO]:
+  % N: número de spins/qubits; \ket{+} = (\ket{0} + \ket{1})/\sqrt{2} (autoestado de \sigma^x com autovalor +1);
+  % Verificar normalização \braket{\psi(0)}{\psi(0)} = 1.
+  \ket{\psi(0)} = \ket{+}^{\otimes N} = \frac{1}{\sqrt{2^N}} \sum_{z \in \{0,1\}^N} \ket{z}.
+  \label{eq:estado_inicial}
+\end{equation}
+
+% ------------------------------------------------------------------------------
+% SUBSEÇÃO II.C — TEOREMA ADIABÁTICO E TRANSIÇÕES DE FASE QUÂNTICAS
+% ORÇAMENTO: 320–360 palavras + 3 equações (~0,38 pág., meio da Pág. 2)
+% ------------------------------------------------------------------------------
+\subsection{Teorema Adiabático e Transições de Fase Quânticas}
+\label{subsec:adiabatico_qpt}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 1 --- Condição adiabática e análise dimensional, $\approx 120$ pal.]:}
+        Enunciar o Teorema Adiabático Quântico em função do tempo adimensional $s = t/t_f \in [0,1]$, garantindo que o sistema permaneça próximo ao autoestado fundamental instantâneo $\ket{\epsilon_0(s)}$ na ausência de cruzamentos de níveis \cite{Das2008,Albash2018}.
+  \item Apresentar a condição adiabática tradicional dimensionalmente consistente (Eq.~\eqref{eq:adiabatica}) e incluir nota rigorosa sobre sua insuficiência em casos patológicos e sobre os limites assintóticos rigorosos $t_f = \mathcal{O}(\Delta_{\min}^{-3})$ (ou dependências em derivadas de ordem superior $\norm{\partial_s^2 \mathcal{H}}$) revisados em \cite{Albash2018}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR CONSISTÊNCIA DIMENSIONAL OBRIGATORIAMENTE]:
+  % t_f: tempo total de arrefecimento [T]; s = t/t_f \in [0,1] [adimensional];
+  % \hbar: [E*T]; \partial_s \mathcal{H}(s): [E]; \Delta_{\min} = \min_s [\epsilon_1(s) - \epsilon_0(s)]: [E].
+  % Dimensão do lado direito: ([E*T] * [E]) / [E]^2 = [T]. CONSISTENTE!
+  % [NOTA AO AUTOR]: Mencionar no texto o limite rigoroso O(\Delta_{\min}^{-3}) de Albash & Lidar (2018).
+  t_f \gg \hbar \, \frac{\max_{s \in [0,1]} \abs{\mel{\epsilon_1(s)}{\partial_s \mathcal{H}(s)}{\epsilon_0(s)}}}{\Delta_{\min}^2}.
+  \label{eq:adiabatica}
+\end{equation}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 2 --- Escalonamento do gap mínimo em QPTs de 1ª vs. 2ª ordem, $\approx 100$ pal.]:}
+        Relacionar o tempo de arrefecimento $t_f$ ao escalonamento do \emph{gap} mínimo $\Delta_{\min}(N)$ no ponto crítico de uma transição de fase quântica (QPT): fechamento polinomial $\Delta_{\min}(N) \sim N^{-z}$ em QPTs contínuas (2ª ordem) versus fechamento exponencial $\Delta_{\min}(N) \sim e^{-\alpha N}$ em QPTs de 1ª ordem (cruzamento evitado estreito, gerando gargalo exponencial) \cite{Albash2018,Chakrabarti2022}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR EXPONENTES CRÍTICOS]:
+  % z: expoente dinâmico crítico (QPT de 2ª ordem); \alpha > 0: taxa de decaimento (QPT de 1ª ordem).
+  \Delta_{\min}(N) \sim
+  \begin{cases}
+    N^{-z}, & \text{(QPT de 2\textordfeminine{} ordem)}, \\
+    e^{-\alpha N}, & \text{(QPT de 1\textordfeminine{} ordem)}.
+  \end{cases}
+  \label{eq:gap_scaling}
+\end{equation}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 3 --- Cronogramas de arrefecimento (SA vs. QA), $\approx 110$ pal.]:}
+        Contrastar os limites assintóticos de convergência garantida: decaimento logarítmico no SA (teorema de Geman--Geman) versus decaimento em lei de potência no QA (teorema de Morita--Nishimori), ressaltando que o expoente ainda escala com $N$ (mantendo a classe de complexidade de problemas NP-difíceis no pior caso) \cite{Kadowaki1998,Das2008}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR CONSTANTES E UNIDADES]:
+  % SA: T(t) >= c / ln(t + t_0) com c ~ O(N) [E];
+  % QA: \Gamma(t) >= (\xi t)^{-1/(2N-1)} (dinâmica de Schrödinger a T=0, cf. Das & Chakrabarti 2008, Eq. 29),
+  %     ou cronograma prático \Gamma(t) = c/\sqrt{t} testado em Kadowaki & Nishimori (1998).
+  T_{\text{SA}}(t) \ge \frac{c}{\ln(t + t_0)}, \qquad
+  \Gamma_{\text{QA}}(t) \ge (\xi t)^{-\frac{1}{2N-1}}.
+  \label{eq:cronogramas}
+\end{equation}
+
+% ==============================================================================
+% SEÇÃO III — METODOLOGIA
+% ORÇAMENTO: 280–320 palavras + 3 equações (~0,32 pág., final da Pág. 2)
+% ==============================================================================
+\section{Metodologia}
+\label{sec:metodologia}
+
+% ------------------------------------------------------------------------------
+% NOTA ESTRUTURAL AO AUTOR — ESCOLHA (OU COMBINAÇÃO) DE MODELO COMPUTACIONAL:
+%   Escolha UMA das duas opções abaixo (a ou b) — ou combine-as em subitens
+%   curtos mantendo o teto de 320 palavras da Seção III. Comente a opção não
+%   utilizada antes de compilar a versão final.
+% ------------------------------------------------------------------------------
+
+% === OPÇÃO (a): SIMULAÇÃO NUMÉRICA EXATA DO TFIM (RECOMENDADA PARA PADRÃO KADOWAKI-NISHIMORI) ===
+\begin{itemize}
+  \item \textbf{[Opção (a) --- Dinâmica no TFIM com $N$ spins pequenos, $\approx 180$ pal.]:}
+        Especificar o tamanho do sistema ($N \in [6,10]$ spins, dimensão $2^N$), a topologia/desordem dos acoplamentos $J_{ij}$ (ex.: ferromagnético, cadeia/grafo frustrado ou vidro de spin SK) e o campo longitudinal $h$ de quebra de simetria \cite{Kadowaki1998}.
+  \item Detalhar o integrador numérico da Equação de Schrödinger dependente do tempo a $T=0$ (Eq.~\eqref{eq:dinamica_qa}, ex.: Crank--Nicolson, RK4 ou exponencial de matriz por passo $\Delta t$) e a dinâmica clássica correspondente via Equação Mestra com taxas de Glauber/Metropolis (Eq.~\eqref{eq:dinamica_sa}) ou Monte Carlo Metropolis sob a mesma forma funcional de cronograma $\Gamma(t) = T(t)$ (ex.: $c/\ln(t+1)$, $c/\sqrt{t}$, $c/t$ ou rampa linear $s=t/t_f$) \cite{Kadowaki1998}.
+  \item \textbf{[Cuidado metodológico obrigatório --- Unidades de tempo]:}
+        Explicitar que as escalas temporais de QA ($\hbar = 1$) e SA (tempo característico de inversão $\tau = 1$ ou passos de Monte Carlo) são fisicamente independentes; justificar que a comparação justa deve focar no comportamento assintótico ($t \to \infty$), em tempos reescalonados pelos pontos críticos ($\Gamma_c, T_c$) ou na taxa de convergência com $t_f$ \cite{Kadowaki1998}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR UNIDADES]: Definir explicitamente se adota \hbar = 1 (unidades naturais) ou SI.
+  i\hbar \pdv{\ket{\psi(t)}}{t} = \mathcal{H}(t)\ket{\psi(t)},
+  \label{eq:dinamica_qa}
+\end{equation}
+
+\begin{equation}
+  % [VERIFICAR MATRIZ DE TRANSIÇÃO \mathcal{L}_{ij}]:
+  % P_i(t): probabilidade clássica do microestado i;
+  % \mathcal{L}_{ij}(T(t)): taxa de transição single-spin-flip (Glauber/Metropolis) obedecendo balanço detalhado.
+  % [NOTA]: Se adotar Opção (b), substituir Eqs. (8)-(9) por Langevin sobreamortecida + taxa WKB 1D.
+  \dv{P_i(t)}{t} = \sum_{j=1}^{2^N} \mathcal{L}_{ij}\!\left(T(t)\right) P_j(t).
+  \label{eq:dinamica_sa}
+\end{equation}
+
+% === OPÇÃO (b): ANALOGIA FENOMENOLÓGICA 1D EM DUPLO POÇO ASSIMÉTRICO (DESCOMENTAR SE ESCOLHIDA) ===
+% \begin{itemize}
+%   \item \textbf{[Opção (b) --- Dinâmica 1D em duplo poço assimétrico, $\approx 180$ pal.]:}
+%         Definir o potencial unidimensional $V(x)$ com mínimo local raso, mínimo global profundo e barreira parametrizável de altura $V_0$ e largura $w$ \cite{Das2008}.
+%   \item Formular a dinâmica clássica (SA) via equação de Langevin sobreamortecida $\gamma \dot{x} = -V'(x) + \sqrt{2\gamma k_B T(t)}\,\eta(t)$ (integrador de Euler--Maruyama, média sobre $M$ trajetórias) e a contraparte quântica (QA) via taxa efetiva WKB dependente de $\Gamma(t)$ ou propagação de pacote de ondas 1D.
+%   \item \textbf{[Espaço obrigatório --- Aproximações e limites físicos]:}
+%         Explicitar as limitações da redução fenomenológica 1D: ausência de emaranhamento multipartite, inexistência de frustração combinatória em espaço discreto $2^N$, restrições da validade semiclássica WKB e ausência de acoplamento realista com banho térmico.
+% \end{itemize}
+
+% --- DEFINIÇÃO FORMAL DAS MÉTRICAS OBSERVÁVEIS (COMUM ÀS DUAS OPÇÕES) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo final --- Métricas observáveis, $\approx 100$--$120$ pal.]:}
+        Definir formalmente a probabilidade de sucesso no estado fundamental clássico $\ket{g}$ ($P_{\text{GS}}$) e a energia média do Hamiltoniano problema ($\ev{E}$), indicando também (se pertinente) a energia residual $\epsilon_{\text{res}}(t) = \ev{E}(t) - E_{\text{GS}}$ e o número de realizações de desordem/amostras estatísticas \cite{Kadowaki1998,Das2008}.
+\end{itemize}
+
+\begin{equation}
+  % [VERIFICAR DEFINIÇÕES]:
+  % \ket{g}: autoestado fundamental de \mathcal{H}_0 com energia E_{\text{GS}};
+  % E_i = \mel{i}{\mathcal{H}_0}{i}: autovalores clássicos; P_g(t): população clássica no estado fundamental.
+  P_{\text{GS}}^{\text{QA}}(t) = \abs{\braket{g}{\psi(t)}}^2, \qquad
+  \ev{E}_{\text{QA}}(t) = \mel{\psi(t)}{\mathcal{H}_0}{\psi(t)},
+  \label{eq:metricas}
+\end{equation}
+% [NOTA AO AUTOR]: No texto imediatamente após Eq. (10), escrever as definições
+% análogas clássicas em linha: $P_{\text{GS}}^{\text{SA}}(t) = P_g(t)$ e
+% $\ev{E}_{\text{SA}}(t) = \sum_i E_i P_i(t)$ (economiza ~4 linhas verticais).
+
+% ==============================================================================
+% PÁGINA 3 — SEÇÃO IV: RESULTADOS
+% ORÇAMENTO: 220–260 palavras + Fig. 1 (~0,25 pág.) + Tab. I (~0,20 pág.) = ~0,62 pág.
+% ==============================================================================
+\section{Resultados}
+\label{sec:resultados}
+
+% --- Parágrafo 1 (~110–130 palavras / ~14 linhas) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo 1 --- Evolução temporal de $P_{\text{GS}}(t)$ sob mesmo cronograma]:}
+        Descrever objetivamente as curvas da Fig.~\ref{fig:pgs_evolucao} comparando $P_{\text{GS}}^{\text{QA}}(t)$ e $P_{\text{GS}}^{\text{SA}}(t)$ (e, opcionalmente, os limites quase-estáticos $P_{\text{GS}}^{\text{st}}$) sob o mesmo cronograma de arrefecimento \cite{Kadowaki1998}.
+  \item Quantificar o ponto de cruzamento/saturação (aprisionamento do SA em platô $P_{\text{GS}}^{\text{SA}} < 1$ vs. aproximação contínua do QA ao estado fundamental) e relatar a taxa de decaimento do erro residual $1 - P_{\text{GS}}(t)$ ou $\epsilon_{\text{res}}(t)$.
+\end{itemize}
+
+% --- BLOCO RESERVADO PARA FIGURA 1 (1 COLUNA, ALTURA MÁX. ~5,5–6,0 cm) ---
+\begin{figure}[t]
+  \centering
+  % [SUBSTITUIR O QUADRO ABAIXO POR]:
+  % \includegraphics[width=\columnwidth]{fig1_pgs_qa_vs_sa.pdf}
+  \fbox{\parbox{0.94\columnwidth}{%
+    \centering\vspace{1.4cm}
+    \textbf{[FIGURA 1 --- ESPAÇO RESERVADO]}\\[4pt]
+    \footnotesize Evolução temporal de $P_{\text{GS}}(t)$ para QA vs. SA\\
+    sob o mesmo cronograma $\Gamma(t) = T(t)$ (escala semilog em $t$).\\
+    Incluir curvas quase-estáticas $P^{\text{st}}$ ou \emph{inset} com $\ev{E}(t)$.
+    \vspace{1.4cm}
+  }}
+  \caption{[Legenda objetiva: especificar modelo ($N$ spins ou duplo poço 1D), cronograma $\Gamma(t)=T(t)$, valores dos parâmetros ($J, h, c$ ou $V_0, w$) e destaque visual da convergência superior/divergente entre QA e SA. Adaptar estilo de \cite{Kadowaki1998}.]}
+  \label{fig:pgs_evolucao}
+\end{figure}
+
+% --- Parágrafo 2 (~110–130 palavras / ~14 linhas) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo 2 --- Sensibilidade à taxa de arrefecimento e barreiras/frustração]:}
+        Apresentar os dados da Tabela~\ref{tab:comparativo}, contrastando o desempenho quantitativo de QA e SA ao variar a velocidade de arrefecimento (ex.: lento $c/\ln(t+1)$, intermediário $c/\sqrt{t}$, rápido $c/t$, ou diferentes $t_f$) e os parâmetros de frustração ou geometria da barreira ($V_0, w$).
+  \item Destacar explicitamente tanto o regime de maior vantagem do QA quanto o regime em que ambos falham (arrefecimento excessivamente rápido / \emph{quench} não-adiabático ou barreiras largas/frustração severa).
+\end{itemize}
+
+% --- BLOCO RESERVADO PARA TABELA I (1 COLUNA, PADRÃO BOOKTABS) ---
+\begin{table}[t]
+  \centering
+  \caption{[Comparação quantitativa do desempenho final ($P_{\text{GS}}$ e $\ev{E}$) entre SA e QA em função do cronograma de arrefecimento e do regime de barreira/frustração. Valores médios sobre $M$ realizações com incerteza estatística.]}
+  \label{tab:comparativo}
+  \footnotesize
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Regime / Parâm. & Cronograma & $P_{\text{GS}}^{\text{SA}}$ & $P_{\text{GS}}^{\text{QA}}$ & $\ev{E}_{\text{SA}}$ & $\ev{E}_{\text{QA}}$ \\
+    \midrule
+    {[Caso 1: ex.\ Ferro / $w$ peq.]}   & {[Lento]}  & {[--]} & {[--]} & {[--]} & {[--]} \\
+    {[Caso 1: ex.\ Ferro / $w$ peq.]}   & {[Médio]}  & {[--]} & {[--]} & {[--]} & {[--]} \\
+    {[Caso 2: ex.\ Frustrado / $V_0$]}  & {[Médio]}  & {[--]} & {[--]} & {[--]} & {[--]} \\
+    {[Caso 2: ex.\ Frustrado / $V_0$]}  & {[Rápido]} & {[--]} & {[--]} & {[--]} & {[--]} \\
+    {[Caso 3: ex.\ SK / $w$ largo]}     & {[Médio]}  & {[--]} & {[--]} & {[--]} & {[--]} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ==============================================================================
+% SEÇÃO V — DISCUSSÃO
+% ORÇAMENTO TOTAL: 430–500 palavras (~0,56 pág.: ~0,38 pág. na Pág. 3 + ~0,18 pág. na Pág. 4)
+% ==============================================================================
+\section{Discussão}
+\label{sec:discussao}
+
+% --- Parágrafos 1–2: Regimes de vantagem e de falha do QA (~230–260 pal., Pág. 3) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo 1 --- Interpretação física dos regimes de vantagem do QA, $\approx 120$ pal.]:}
+        Conectar os resultados da Sec.~\ref{sec:resultados} à teoria da Sec.~\ref{sec:fundamentos}: por que o QA supera o SA em paisagens com barreiras altas e estreitas (tunelamento WKB) e em platôs largos/planos sem gradiente clássico (deslocalização da função de onda) \cite{Kadowaki1998,Das2008,Chakrabarti2022}.
+  \item \textbf{[Parágrafo 2 --- Regimes de falha e limites fundamentais do QA, $\approx 130$ pal.]:}
+        Analisar os mecanismos pelos quais o QA falha ou perde vantagem assintótica: fechamento exponencial do \emph{gap} mínimo $\Delta_{\min}(N) \sim e^{-\alpha N}$ em transições de fase quânticas de 1ª ordem, gargalos na fase de vidro de spin (localização de Anderson / cascata de cruzamentos evitados de Landau--Zener) e a ausência de garantia de solução polinomial para problemas NP-difíceis \cite{Das2008,Albash2018,Chakrabarti2022}.
+\end{itemize}
+
+% --- Parágrafos 3–4: Hardware real e caminhos modernos (~200–240 pal., Pág. 3–4) ---
+\begin{itemize}
+  \item \textbf{[Parágrafo 3 --- Limitações de hardware real de recozimento quântico, $\approx 110$ pal.]:}
+        Discutir os desafios experimentais em processadores quânticos reais (ex.: qubits supercondutores de fluxo): acoplamento a banhos térmicos e decoerência ($T > 0$), ruído de controle analógico em $J_{ij}$ e $h_i$, e conectividade esparsa exigindo \emph{minor-embedding} (cadeias de qubits físicos com custo quadrático e erros de quebra de cadeia) \cite{Albash2018,Chakrabarti2022}.
+  \item \textbf{[Parágrafo 4 --- Caminhos modernos além do QA estoquástico adiabático, $\approx 110$ pal.]:}
+        Apresentar estratégias contemporâneas para mitigar os gargalos: introdução de termos \emph{não-estoquásticos} e catalisadores (ex.: interações transversas $\sigma_i^x \sigma_j^x$ ou $\sigma_i^y \sigma_j^y$ para suavizar QPTs de 1ª ordem em 2ª ordem), evolução \emph{diabática} (aproveitando estados excitados intermediários) e cronogramas não-lineares/reversos \cite{Das2008,Albash2018,Chakrabarti2022}.
+\end{itemize}
+
+% ==============================================================================
+% PÁGINA 4 — SEÇÃO VI: CONCLUSÕES
+% ORÇAMENTO: 180–220 palavras (~22–26 linhas de coluna | ~0,22 pág., Pág. 4)
+% ==============================================================================
+\section{Conclusões}
+\label{sec:conclusoes}
+
+\begin{itemize}
+  \item \textbf{[Parágrafo 1 --- Síntese dos resultados e resposta à hipótese central, $\approx 120$ pal.]:}
+        Recapitular objetivamente os achados quantitativos (sem repetir números extensos da tabela), respondendo diretamente à hipótese formulada na Introdução sobre quando e por que o tunelamento quântico supera a ativação térmica \cite{Kadowaki1998,Das2008}.
+  \item \textbf{[Parágrafo 2 --- Perspectivas, $\approx 80$ pal.]:}
+        Apontar desdobramentos concretos para trabalhos futuros (extensão para $N$ maiores via PIMC/DMRG, modelagem de sistemas quânticos abertos via equação de Lindblad e teste de catalisadores não-estoquásticos) \cite{Albash2018,Chakrabarti2022}.
+\end{itemize}
+
+% ==============================================================================
+% SEÇÃO / APÊNDICE OBRIGATÓRIO — DECLARAÇÃO DE USO CRÍTICO DE IA
+% ORÇAMENTO: ~80–100 palavras + Tabela II auditável (~0,35 pág., Pág. 4)
+% Nota: Em REVTeX, pode-se converter para `\appendix*\section{...}` se preferir
+%       o rótulo "APÊNDICE". A opção `\section*` abaixo funciona em ambas as classes.
+% ==============================================================================
+\phantomsection
+\section*{Declaração de Uso Crítico de Inteligência Artificial}
+\label{sec:declaracao_ia}
+
+\begin{itemize}
+  \item \textbf{[Nota introdutória curta, $\approx 50$--$80$ pal.]:}
+        Declarar a responsabilidade integral do autor pelo conteúdo científico, pelas equações, pelos códigos numéricos e pela redação final, resumindo de forma transparente em quais etapas ferramentas de IA generativa foram empregadas como apoio (Tabela~\ref{tab:uso_ia}).
+\end{itemize}
+
+% --- TABELA II AUDITÁVEL (LARGURA TOTAL `table*` PARA LEGIBILIDADE EM 4 COLUNAS) ---
+\begin{table*}[t]
+  \centering
+  \caption{[Registro auditável de uso crítico de ferramentas de Inteligência Artificial na elaboração deste miniartigo. Preencher cada linha com fatos reais verificáveis pelo autor.]}
+  \label{tab:uso_ia}
+  \footnotesize
+  \begin{tabular}{@{}p{0.18\textwidth}p{0.20\textwidth}p{0.30\textwidth}p{0.26\textwidth}@{}}
+    \toprule
+    \textbf{Ferramenta / Modelo} & \textbf{Etapa do trabalho} & \textbf{Limitações ou erros detectados pelo autor} & \textbf{Validação humana realizada} \\
+    \midrule
+    {[Nome / versão do modelo]} &
+    Triagem bibliográfica e mapeamento conceitual &
+    {[Ex.: omissão de condições de contorno ou citações imprecisas/desatualizadas]} &
+    {[Conferência direta nos artigos originais \cite{Kirkpatrick1983,Kadowaki1998,Das2008,Albash2018,Chakrabarti2022}]} \\[4pt]
+    %
+    {[Nome / versão do modelo]} &
+    Estruturação \LaTeX{} e orçamento de espaço &
+    {[Ex.: conflitos de layout ou subestimação do espaço de equações/tabelas]} &
+    {[Compilação local, ajuste fino para exatamente 4 páginas e revisão editorial]} \\[4pt]
+    %
+    {[Nome / versão do modelo]} &
+    Depuração matemática e de código numérico &
+    {[Ex.: inconsistência dimensional na condição adiabática (omissão de $\hbar$) ou simplificações fenomenológicas 1D]} &
+    {[Análise dimensional manual, testes de convergência numérica e checagem de limites analíticos]} \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+% ==============================================================================
+% REFERÊNCIAS (BIBTEX — 5 REFERÊNCIAS BASE | ~0,25 pág., final da Pág. 4)
+% ==============================================================================
+% Na classe `revtex4-2`, o estilo `apsrev4-2` é o padrão APS oficial.
+% Caso utilize a alternativa `article`, troque para `\bibliographystyle{unsrt}`.
+\bibliographystyle{apsrev4-2}
+\bibliography{referencias}
+
+\end{document}
