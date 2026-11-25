@@ -35,7 +35,7 @@ Física Estatística — IF-UFG
 - **Escape térmico (SA):** $P_{\text{SA}} \sim \exp(-N / T_c)$ — depende só da **altura**. <!--[cite: 41, 46] -->
 - **Tunelamento (QA):** $P_{\text{QA}} \sim \exp\!\left(-\sqrt{N}\,w / \Gamma_q\right)$ — depende da altura **e da largura $w$**. <!--[cite: 41, 46] -->
 - **Regime vencedor:** barreiras **altas e estreitas** e platôs largos. <!--[cite: 25, 46, 89, 90] -->
-- **Experimento ($\text{LiHo}_{0.44}\text{Y}_{0.56}\text{F}_4$):** relaxação até **$30\times$ mais rápida** que o resfriamento térmico. <!--[cite: 40] -->
+
 
 ---
 
